@@ -1,0 +1,92 @@
+{
+  "info": {
+    "name": "E-Commerce Backend API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Jane Doe\",\n  \"email\": \"jane@example.com\",\n  \"password\": \"secret123\"\n}"
+            },
+            "url": {"raw": "http://localhost:8080/auth/register", "host": ["http://localhost:8080"], "path": ["auth", "register"]}
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"jane@example.com\",\n  \"password\": \"secret123\"\n}"
+            },
+            "url": {"raw": "http://localhost:8080/auth/login", "host": ["http://localhost:8080"], "path": ["auth", "login"]}
+          }
+        }
+      ]
+    },
+    {
+      "name": "Products",
+      "item": [
+        {
+          "name": "Create Product",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pName\": \"Laptop\",\n  \"price\": 899.99,\n  \"quantity\": 10,\n  \"category\": \"Electronics\"\n}"
+            },
+            "url": {"raw": "http://localhost:8080/products", "host": ["http://localhost:8080"], "path": ["products"]}
+          }
+        },
+        {
+          "name": "Get Products",
+          "request": {"method": "GET", "url": {"raw": "http://localhost:8080/products", "host": ["http://localhost:8080"], "path": ["products"]}}
+        }
+      ]
+    },
+    {
+      "name": "Cart",
+      "item": [
+        {
+          "name": "Add Product to Cart",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": 1\n}"
+            },
+            "url": {"raw": "http://localhost:8080/cart/items", "host": ["http://localhost:8080"], "path": ["cart", "items"]}
+          }
+        },
+        {
+          "name": "View Cart",
+          "request": {"method": "GET", "url": {"raw": "http://localhost:8080/cart", "host": ["http://localhost:8080"], "path": ["cart"]}}
+        }
+      ]
+    },
+    {
+      "name": "Orders",
+      "item": [
+        {
+          "name": "Checkout",
+          "request": {"method": "POST", "url": {"raw": "http://localhost:8080/orders/checkout", "host": ["http://localhost:8080"], "path": ["orders", "checkout"]}}
+        },
+        {
+          "name": "Order History",
+          "request": {"method": "GET", "url": {"raw": "http://localhost:8080/orders", "host": ["http://localhost:8080"], "path": ["orders"]}}
+        }
+      ]
+    }
+  ]
+}

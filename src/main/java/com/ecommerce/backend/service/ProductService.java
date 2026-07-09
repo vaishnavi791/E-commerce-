@@ -1,5 +1,7 @@
 package com.ecommerce.backend.service;
 
+import com.ecommerce.backend.dto.ProductDTO;
+import com.ecommerce.backend.exception.ResourceNotFoundException;
 import com.ecommerce.backend.model.Product;
 import com.ecommerce.backend.repository.ProductRepository;
 import org.springframework.stereotype.Service;
@@ -9,38 +11,52 @@ import java.util.List;
 @Service
 public class ProductService {
 
-    private final ProductRepository productRepository;
+    private final ProductRepository repository;
 
-    public ProductService(ProductRepository productRepository) {
-        this.productRepository = productRepository;
+    public ProductService(ProductRepository repository){
+        this.repository = repository;
     }
 
-    public Product addProduct(Product product) {
-        return productRepository.save(product);
+    public Product addProduct(ProductDTO dto){
+
+        Product product = new Product();
+
+        product.setPName(dto.getPName());
+        product.setPrice(dto.getPrice());
+        product.setQuantity(dto.getQuantity());
+        product.setCategory(dto.getCategory());
+
+        return repository.save(product);
     }
 
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
-    }
-    public Product getProductById(Long id) {
-        return productRepository.findById(id).orElse(null);
+    public List<Product> getAllProducts(){
+        return repository.findAll();
+
     }
 
-    public void deleteProduct(Long id) {
-        productRepository.deleteById(id);
+    public Product getProductById(Long id){
+
+        return repository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Product not found with id "+id));
+
     }
 
-    public Product updateProduct(Long id, Product updatedProduct) {
-        Product existing = productRepository.findById(id).orElse(null);
+    public Product updateProduct(Long id, ProductDTO dto){
+        Product product = getProductById(id);
 
-        if (existing != null) {
-            existing.setPName(updatedProduct.getPName());
-            existing.setPrice(updatedProduct.getPrice());
-            existing.setQuantity(updatedProduct.getQuantity());
-            existing.setCategory(updatedProduct.getCategory());
+        product.setPName(dto.getPName());
+        product.setPrice(dto.getPrice());
+        product.setQuantity(dto.getQuantity());
+        product.setCategory(dto.getCategory());
 
-            return productRepository.save(existing);
-        }
-        return null;
+        return repository.save(product);
+
     }
+
+    public void deleteProduct(Long id){
+        Product product = getProductById(id);
+        repository.delete(product);
+    }
+
 }
