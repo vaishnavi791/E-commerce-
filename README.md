@@ -4,19 +4,19 @@ A production-style Spring Boot backend for an e-commerce application with JWT au
 
 ## Project Overview
 
-This project provides a layered REST API backend built with Java 17, Spring Boot 3.5.x, Spring Security, JWT, Spring Data JPA, MySQL, and Maven.
+This project provides a layered REST API backend built with Java 17, Spring Boot 3.5.x, Spring Security, JWT, Spring Data JPA, MySQL, and Maven. Incoming client requests are intercepted by Spring Security and validated using stateless JWT tokens before reaching the controller layer. Validated requests then transition smoothly through specialized service and repository layers to perform secure data operations on the MySQL database.
 
 ## Tech Stack
+### Tech Stack
 
-- Java 17
-- Spring Boot 3.5.x
-- Spring Security
-- JWT Authentication
-- Spring Data JPA (Hibernate)
-- MySQL
-- Maven
-- Lombok
-- OpenAPI/Swagger
+![Java](https://img.shields.io/badge/Java_17-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot_3.5.x-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white)
+![Spring Security](https://img.shields.io/badge/Spring_Security-6DB33F?style=for-the-badge&logo=spring&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT_Authentication-black?style=for-the-badge&logo=JSON-web-tokens&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-00758F?style=for-the-badge&logo=mysql&logoColor=white)
+![Maven](https://img.shields.io/badge/Maven-C71A36?style=for-the-badge&logo=apache-maven&logoColor=white)
+![Lombok](https://img.shields.io/badge/Lombok-red?style=for-the-badge)
+![Swagger](https://img.shields.io/badge/OpenAPI_/_Swagger-85EA2D?style=for-the-badge&logo=openapi-initiative&logoColor=black)
 
 ## Folder Structure
 
@@ -90,7 +90,7 @@ Authorization: Bearer <token>
 
 A Postman collection can be generated from the listed endpoints for manual API testing.
 
-Testing User Registeration on Postman:
+Testing User Registration on Postman:
 <img width="1422" height="776" alt="Screenshot 2026-07-12 130541" src="https://github.com/user-attachments/assets/2220df41-44a6-4e22-bdeb-230bb6efa256" />
 
 
