@@ -90,8 +90,17 @@ Authorization: Bearer <token>
 
 A Postman collection can be generated from the listed endpoints for manual API testing.
 
+Testing User Registeration on Postman:
+<img width="1422" height="776" alt="Screenshot 2026-07-12 130541" src="https://github.com/user-attachments/assets/2220df41-44a6-4e22-bdeb-230bb6efa256" />
+
+
+Testing User Login on Postman:
+<img width="1421" height="772" alt="Screenshot 2026-07-12 130808" src="https://github.com/user-attachments/assets/5a1cabe5-325f-462e-83b1-3755bfb1baea" />
+
+
 ## Future Improvements
 
+- Add a minimal frontend using react.js
 - Add payment integration
 - Introduce inventory management
 - Add pagination and filtering
