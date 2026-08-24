@@ -16,7 +16,6 @@ This project provides a layered REST API backend built with Java 17, Spring Boot
 ![MySQL](https://img.shields.io/badge/MySQL-00758F?style=for-the-badge&logo=mysql&logoColor=white)
 ![Maven](https://img.shields.io/badge/Maven-C71A36?style=for-the-badge&logo=apache-maven&logoColor=white)
 ![Lombok](https://img.shields.io/badge/Lombok-red?style=for-the-badge)
-![Swagger](https://img.shields.io/badge/OpenAPI_/_Swagger-85EA2D?style=for-the-badge&logo=openapi-initiative&logoColor=black)
 
 ## Folder Structure
 
