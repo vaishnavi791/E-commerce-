@@ -20,29 +20,38 @@ This project provides a layered REST API backend built with Java 17, Spring Boot
 ## Folder Structure
 
 ```text
-src/
-  main/
-    java/com/ecommerce/backend/
-      config/
-      controller/
-      dto/
-      exception/
-      model/
-      repository/
-      security/
-      service/
-      util/
-    resources/application.properties
+backend/
+  src/
+    main/
+      java/com/ecommerce/backend/
+        config/
+        controller/
+        dto/
+        exception/
+        model/
+        repository/
+        security/
+        service/
+        util/
+      resources/application.properties
+  pom.xml
+  mvnw
+  mvnw.cmd
+  .mvn/
+frontend/
+  src/
+  package.json
 ```
 
 ## Installation
 
 1. Clone the repository.
 2. Create a MySQL database named `ecommerce`.
-3. Update the database credentials in `src/main/resources/application.properties`.
+3. Update the database and JWT credentials in `backend/src/main/resources/application.properties`.
 4. Run:
 
 ```bash
+cd backend
 ./mvnw spring-boot:run
 ```
 
