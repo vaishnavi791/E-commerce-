@@ -10,6 +10,7 @@ public class CartDTO {
     private Long productId;
     private List<Long> productIds;
     private List<String> productNames;
+    private double subtotal;
 
     public Long getCartId() {
         return cartId;
@@ -41,5 +42,13 @@ public class CartDTO {
 
     public void setProductNames(List<String> productNames) {
         this.productNames = productNames;
+    }
+
+    public double getSubtotal() {
+        return subtotal;
+    }
+
+    public void setSubtotal(double subtotal) {
+        this.subtotal = subtotal;
     }
 }

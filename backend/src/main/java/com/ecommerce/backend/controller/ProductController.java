@@ -3,6 +3,7 @@ package com.ecommerce.backend.controller;
 import com.ecommerce.backend.dto.ProductDTO;
 import com.ecommerce.backend.model.Product;
 import com.ecommerce.backend.service.ProductService;
+import com.ecommerce.backend.service.UserInteractionService;
 import com.ecommerce.backend.util.MapperUtil;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -16,9 +17,11 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService productService;
+    private final UserInteractionService interactionService;
 
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, UserInteractionService interactionService) {
         this.productService = productService;
+        this.interactionService = interactionService;
     }
 
     @PostMapping
@@ -37,7 +40,9 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ProductDTO> getProduct(@PathVariable Long id) {
-        return ResponseEntity.ok(MapperUtil.toProductDTO(productService.getProductById(id)));
+        Product product = productService.getProductById(id);
+        interactionService.record("VIEW", id);
+        return ResponseEntity.ok(MapperUtil.toProductDTO(product));
     }
 
     @PutMapping("/{id}")

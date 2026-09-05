@@ -55,7 +55,21 @@ cd backend
 ./mvnw spring-boot:run
 ```
 
-To load the sample women's catalog into MySQL, run `backend/database/seed-products.sql` after creating the `ecommerce` database. It adds twelve products, with three products in each of Clothing, Footwear, Accessories, and Beauty.
+The sample catalog is loaded automatically into MySQL when Spring Boot starts. Existing products are preserved, and the application adds any missing catalog products for recommendation testing.
+
+## Personalized Recommendations
+
+The project includes a separate TF-IDF recommendation service in `recommendation-service/`. Start it before Spring Boot:
+
+```powershell
+cd recommendation-service
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+uvicorn main:app --reload --port 8000
+```
+
+Then start Spring Boot from `backend/`. Authenticated React users receive recommendations from `GET /api/recommendations`; React calls Spring Boot only, and Spring Boot calls the Python service internally.
 
 ## MySQL Setup
 

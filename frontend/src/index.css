@@ -528,6 +528,22 @@ h1 {
   position: absolute;
   text-indent: -9999px;
 }
+.wishlist-button {
+  background: #fbfaf8;
+  border: 0;
+  color: #7d776f;
+  cursor: pointer;
+  font-size: 1.4rem;
+  line-height: 1;
+  padding: 0.35rem;
+  position: absolute;
+  right: 0.6rem;
+  top: 0.6rem;
+  z-index: 2;
+}
+.wishlist-button.active {
+  color: #a64b45;
+}
 .empty-state,
 .form-intro {
   margin: 6rem auto;

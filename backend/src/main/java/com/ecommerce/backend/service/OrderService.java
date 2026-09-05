@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,13 +22,19 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final CartRepository cartRepository;
     private final UserRepository userRepository;
+    private final UserInteractionService interactionService;
+    private final CartPricingService cartPricingService;
 
     public OrderService(OrderRepository orderRepository,
                         CartRepository cartRepository,
-                        UserRepository userRepository) {
+                        UserRepository userRepository,
+                        UserInteractionService interactionService,
+                        CartPricingService cartPricingService) {
         this.orderRepository = orderRepository;
         this.cartRepository = cartRepository;
         this.userRepository = userRepository;
+        this.interactionService = interactionService;
+        this.cartPricingService = cartPricingService;
     }
 
     @Transactional
@@ -40,16 +47,18 @@ public class OrderService {
             throw new ResourceNotFoundException("Cart is empty");
         }
 
-        double totalAmount = cart.getProducts().stream().mapToDouble(Product::getPrice).sum();
+        List<Product> purchasedProducts = new ArrayList<>(cart.getProducts());
+        double totalAmount = cartPricingService.calculateTotal(purchasedProducts);
 
         Order order = new Order();
         order.setUser(currentUser);
-        order.setProducts(cart.getProducts());
+        order.setProducts(purchasedProducts);
         order.setOrderDate(LocalDateTime.now());
         order.setStatus("PLACED");
         order.setTotalAmount(totalAmount);
 
         orderRepository.save(order);
+        purchasedProducts.forEach(product -> interactionService.record("PURCHASE", product.getId()));
         cart.getProducts().clear();
         cartRepository.save(cart);
 

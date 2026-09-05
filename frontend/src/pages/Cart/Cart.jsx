@@ -47,6 +47,7 @@ export default function Cart() {
     (result, id) => ({ ...result, [id]: (result[id] || 0) + 1 }),
     {},
   );
+  const subtotal = Number(cart?.subtotal || 0);
   async function mutate(action) {
     setMutating(true);
     setError("");
@@ -126,6 +127,10 @@ export default function Cart() {
                   <p className="eyebrow">{product.category}</p>
                   <h3>{product.pName}</h3>
                   <p>₹{Number(product.price).toFixed(2)}</p>
+                  <p className="muted">
+                    {quantities[product.id] || 0} × price = ₹
+                    {(Number(product.price) * (quantities[product.id] || 0)).toFixed(2)}
+                  </p>
                   <div className="quantity">
                     <button
                       disabled={mutating}
@@ -168,7 +173,9 @@ export default function Cart() {
           </div>
           <aside className="summary">
             <h2>Summary</h2>
-            <p>Total is calculated by the backend during checkout.</p>
+            <p>Subtotal <strong>₹{subtotal.toFixed(2)}</strong></p>
+            <p>Total <strong>₹{subtotal.toFixed(2)}</strong></p>
+            <p>The backend confirms the final total from current product prices at checkout.</p>
             <Link className="button" to="/checkout">
               Checkout
             </Link>

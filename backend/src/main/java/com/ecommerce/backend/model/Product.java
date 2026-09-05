@@ -37,6 +37,8 @@ public class Product {
     @NotBlank(message = "Image URL cannot be empty")
     private String imageUrl;
 
+    private String description;
+
     public Product() {
     }
 
@@ -118,5 +120,13 @@ public class Product {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

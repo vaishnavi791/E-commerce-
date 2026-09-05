@@ -31,6 +31,16 @@ export default function Products() {
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
   }, [token]);
+  useEffect(() => {
+    setFilters((currentFilters) => ({
+      ...currentFilters,
+      search: params.get("search") || "",
+      category: params.get("category") || "",
+      subcategory: params.get("category")
+        ? currentFilters.subcategory
+        : "",
+    }));
+  }, [params]);
   const subcategories = {
     Clothing: [
       "Dresses",
@@ -112,13 +122,7 @@ export default function Products() {
         />
         <select
           value={filters.category}
-          onChange={(event) =>
-            setFilters({
-              ...filters,
-              category: event.target.value,
-              subcategory: "",
-            })
-          }
+          onChange={(event) => updateFilter("category", event.target.value)}
         >
           <option value="">All categories</option>
           {Object.keys(subcategories).map((item) => (

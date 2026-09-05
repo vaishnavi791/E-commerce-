@@ -34,9 +34,9 @@ export default function Navbar() {
           >
             Profile
           </NavLink>
-          <button className="link-button" type="button" aria-label="Wishlist">
+          <NavLink className="nav-icon" to="/wishlist" aria-label="Wishlist">
             Wishlist
-          </button>
+          </NavLink>
           {token && (
             <button className="link-button" type="button" onClick={signOut}>
               Sign out

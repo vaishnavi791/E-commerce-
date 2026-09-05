@@ -1,6 +1,10 @@
 import { Link } from "react-router-dom";
+import { useWishlist } from "../../context/WishlistContext";
 
 export default function ProductCard({ product }) {
+  const { wishlistIds, toggleWishlist } = useWishlist();
+  const isWishlisted = product?.id && wishlistIds.includes(product.id);
+
   return (
     <article className="product-card">
       <div className="product-image">
@@ -29,6 +33,16 @@ export default function ProductCard({ product }) {
           ₹{product?.price == null ? "0.00" : Number(product.price).toFixed(2)}
         </p>
       </div>
+      {product?.id && (
+        <button
+          className={`wishlist-button${isWishlisted ? " active" : ""}`}
+          type="button"
+          aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
+          onClick={() => toggleWishlist(product.id)}
+        >
+          {isWishlisted ? "♥" : "♡"}
+        </button>
+      )}
       {product?.id && (
         <Link className="stretched-link" to={`/products/${product.id}`}>
           View product

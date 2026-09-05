@@ -18,13 +18,19 @@ public class CartService {
     private final CartRepository cartRepository;
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
+    private final UserInteractionService interactionService;
+    private final CartPricingService cartPricingService;
 
     public CartService(CartRepository cartRepository,
                        ProductRepository productRepository,
-                       UserRepository userRepository) {
+                       UserRepository userRepository,
+                       UserInteractionService interactionService,
+                       CartPricingService cartPricingService) {
         this.cartRepository = cartRepository;
         this.productRepository = productRepository;
         this.userRepository = userRepository;
+        this.interactionService = interactionService;
+        this.cartPricingService = cartPricingService;
     }
 
     @Transactional
@@ -36,11 +42,10 @@ public class CartService {
         Cart cart = cartRepository.findByUser(currentUser)
                 .orElseGet(() -> createCart(currentUser));
 
-        if (!cart.getProducts().contains(product)) {
-            cart.getProducts().add(product);
-        }
+        cart.getProducts().add(product);
 
         cartRepository.save(cart);
+        interactionService.record("CART_ADD", product.getId());
         return toCartDTO(cart);
     }
 
@@ -107,6 +112,7 @@ public class CartService {
         cartDTO.setCartId(cart.getId());
         cartDTO.setProductIds(cart.getProducts().stream().map(Product::getId).toList());
         cartDTO.setProductNames(cart.getProducts().stream().map(Product::getPName).toList());
+        cartDTO.setSubtotal(cartPricingService.calculateTotal(cart.getProducts()));
         return cartDTO;
     }
 }

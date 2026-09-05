@@ -11,6 +11,7 @@ export const endpoints = {
   cartItem: (productId) => `/cart/items/${productId}`,
   checkout: "/orders/checkout",
   orders: "/orders",
+  recommendations: "/api/recommendations",
   cancelOrder: (orderId) => `/orders/${orderId}/cancel`,
 };
 

@@ -10,6 +10,7 @@ import { useAuth } from "../../context/AuthContext";
 export default function Home() {
   const { token } = useAuth();
   const [products, setProducts] = useState([]);
+  const [recommendations, setRecommendations] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -18,8 +19,14 @@ export default function Home() {
       return;
     }
     setLoading(true);
-    apiFetch(endpoints.products)
-      .then(setProducts)
+    Promise.all([
+      apiFetch(endpoints.products),
+      apiFetch(endpoints.recommendations),
+    ])
+      .then(([productResults, recommendationResults]) => {
+        setProducts(productResults);
+        setRecommendations(recommendationResults);
+      })
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
   }, [token]);
@@ -95,10 +102,18 @@ export default function Home() {
       <section className="recommendation">
         <p className="eyebrow">A little something for you</p>
         <h2>Recommended for you</h2>
-        <p>
-          Personal recommendations will appear as your collection takes shape.
-        </p>
-        <Link to="/products">Start exploring</Link>
+        {loading ? (
+          <Loading />
+        ) : recommendations.length ? (
+          <ProductGrid products={recommendations} />
+        ) : (
+          <>
+            <p>
+              Personal recommendations will appear as your collection takes shape.
+            </p>
+            <Link to="/products">Start exploring</Link>
+          </>
+        )}
       </section>
     </>
   );

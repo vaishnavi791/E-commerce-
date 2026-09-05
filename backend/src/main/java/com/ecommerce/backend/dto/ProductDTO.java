@@ -28,6 +28,8 @@ public class ProductDTO {
     @NotBlank(message = "Image URL is required")
     private String imageUrl;
 
+    private String description;
+
     public Long getId() {
         return id;
     }
@@ -90,5 +92,13 @@ public class ProductDTO {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

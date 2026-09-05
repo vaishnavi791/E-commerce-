@@ -88,7 +88,7 @@ This document describes the REST API currently implemented in this repository. U
 
 ## 3. Product Endpoints
 
-`ProductDTO` request fields are `pName`, `price`, `quantity`, `category`, `subcategory`, `brand`, and `imageUrl`. Text fields must not be blank, `price` must be at least `1`, and `quantity` must be at least `0`.
+`ProductDTO` request fields are `pName`, `price`, `quantity`, `category`, `subcategory`, `brand`, `imageUrl`, and optional `description`. Required text fields must not be blank, `price` must be at least `1`, and `quantity` must be at least `0`.
 
 ### Add Product
 
@@ -111,7 +111,7 @@ This document describes the REST API currently implemented in this repository. U
 
 **HEADERS:** `Content-Type: application/json`; `Authorization: Bearer <token>`  
 **AUTHENTICATION REQUIRED:** Yes  
-**RESPONSE FORMAT:** HTTP `201`, a `ProductDTO` object with `id`, `pName`, `price`, `quantity`, `category`, `subcategory`, `brand`, and `imageUrl`.
+**RESPONSE FORMAT:** HTTP `201`, a `ProductDTO` object with `id`, `pName`, `price`, `quantity`, `category`, `subcategory`, `brand`, `imageUrl`, and `description`.
 **PURPOSE:** Creates a product.
 
 ### List Products
@@ -121,7 +121,7 @@ This document describes the REST API currently implemented in this repository. U
 **REQUEST BODY:** NOT AVAILABLE  
 **HEADERS:** `Authorization: Bearer <token>`  
 **AUTHENTICATION REQUIRED:** Yes  
-**RESPONSE FORMAT:** HTTP `200`, an array of `ProductDTO` objects containing `id`, `pName`, `price`, `quantity`, `category`, `subcategory`, `brand`, and `imageUrl`.
+**RESPONSE FORMAT:** HTTP `200`, an array of `ProductDTO` objects containing `id`, `pName`, `price`, `quantity`, `category`, `subcategory`, `brand`, `imageUrl`, and `description`.
 **PURPOSE:** Returns all products.
 
 ### Get Product
@@ -131,7 +131,7 @@ This document describes the REST API currently implemented in this repository. U
 **REQUEST BODY:** NOT AVAILABLE  
 **HEADERS:** `Authorization: Bearer <token>`  
 **AUTHENTICATION REQUIRED:** Yes  
-**RESPONSE FORMAT:** HTTP `200`, one `ProductDTO` with `id`, `pName`, `price`, `quantity`, `category`, `subcategory`, `brand`, and `imageUrl`.
+**RESPONSE FORMAT:** HTTP `200`, one `ProductDTO` with `id`, `pName`, `price`, `quantity`, `category`, `subcategory`, `brand`, `imageUrl`, and `description`.
 **PURPOSE:** Returns a product by database ID.
 
 ### Update Product
@@ -141,7 +141,7 @@ This document describes the REST API currently implemented in this repository. U
 **REQUEST BODY:** Same `ProductDTO` structure as `POST /products`.  
 **HEADERS:** `Content-Type: application/json`; `Authorization: Bearer <token>`  
 **AUTHENTICATION REQUIRED:** Yes  
-**RESPONSE FORMAT:** HTTP `200`, a `ProductDTO` with `id`, `pName`, `price`, `quantity`, `category`, `subcategory`, `brand`, and `imageUrl`.
+**RESPONSE FORMAT:** HTTP `200`, a `ProductDTO` with `id`, `pName`, `price`, `quantity`, `category`, `subcategory`, `brand`, `imageUrl`, and `description`.
 **PURPOSE:** Replaces the editable fields of an existing product.
 
 ### Delete Product
@@ -269,4 +269,14 @@ Product images are supported through the `imageUrl` string field. The URL is sto
 
 ## 10. CORS
 
-**NOT CONFIGURED.** No `CorsConfiguration`, CORS filter, `WebMvcConfigurer`, or `@CrossOrigin` annotation was found. A browser frontend hosted on another origin may therefore need backend CORS configuration before it can call this API directly.
+The backend allows browser requests from `http://localhost:5173` and `http://127.0.0.1:5173`, including the `Authorization` and `Content-Type` headers used by the frontend.
+
+## 11. Recommendations
+
+**METHOD:** `GET`  
+**URL:** `/api/recommendations`  
+**REQUEST BODY:** NOT AVAILABLE  
+**HEADERS:** `Authorization: Bearer <token>`  
+**AUTHENTICATION REQUIRED:** Yes  
+**RESPONSE FORMAT:** HTTP `200`, an array of `ProductDTO` objects.  
+**PURPOSE:** Returns personalized products for the authenticated user. Spring Boot loads the user's `VIEW`, `CART_ADD`, and `PURCHASE` interactions from MySQL, sends product features and interaction history to the internal FastAPI service, then hydrates the returned product IDs from MySQL. New users receive recent products.

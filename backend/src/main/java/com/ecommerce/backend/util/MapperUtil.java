@@ -18,6 +18,7 @@ public final class MapperUtil {
         dto.setSubcategory(product.getSubcategory());
         dto.setBrand(product.getBrand());
         dto.setImageUrl(product.getImageUrl());
+        dto.setDescription(product.getDescription());
         return dto;
     }
 }
