@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { useCart } from "../../context/CartContext";
 import { apiFetch, endpoints } from "../../services/api";
 
 export default function Checkout() {
   const { token } = useAuth();
+  const { setCart } = useCart();
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
@@ -12,6 +14,7 @@ export default function Checkout() {
     setBusy(true);
     try {
       await apiFetch(endpoints.checkout, { method: "POST" });
+      setCart({ cartId: null, productIds: [], productNames: [] });
       navigate("/orders");
     } catch (err) {
       setError(err.message);

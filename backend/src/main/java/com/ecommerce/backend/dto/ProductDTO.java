@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotBlank;
 
 public class ProductDTO {
 
+    private Long id;
+
     @NotBlank(message = "Product name is required")
     private String pName;
 
@@ -16,6 +18,23 @@ public class ProductDTO {
 
     @NotBlank(message = "Category is required")
     private String category;
+
+    @NotBlank(message = "Subcategory is required")
+    private String subcategory;
+
+    @NotBlank(message = "Brand is required")
+    private String brand;
+
+    @NotBlank(message = "Image URL is required")
+    private String imageUrl;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getPName() {
         return pName;
@@ -47,5 +66,29 @@ public class ProductDTO {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public String getSubcategory() {
+        return subcategory;
+    }
+
+    public void setSubcategory(String subcategory) {
+        this.subcategory = subcategory;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

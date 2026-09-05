@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { apiFetch, endpoints } from "../../services/api";
 import { useCart } from "../../context/CartContext";
 import Loading from "../../components/Loading/Loading";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
+import { useAuth } from "../../context/AuthContext";
 
 export default function ProductDetails() {
+  const { token } = useAuth();
   const { id } = useParams();
   const navigate = useNavigate();
   const { addItem } = useCart();
@@ -18,6 +20,12 @@ export default function ProductDetails() {
     setProduct(null);
     setSimilar([]);
     setError("");
+    if (!token) {
+      setProduct(null);
+      setSimilar([]);
+      setError("");
+      return undefined;
+    }
     apiFetch(endpoints.product(id))
       .then((result) => {
         if (active) setProduct(result);
@@ -28,7 +36,7 @@ export default function ProductDetails() {
     return () => {
       active = false;
     };
-  }, [id]);
+  }, [id, token]);
   useEffect(() => {
     if (!product?.category) return undefined;
     let active = true;
@@ -57,6 +65,17 @@ export default function ProductDetails() {
       setAdding(false);
     }
   }
+  if (!token)
+    return (
+      <section className="content-page">
+        <div className="empty-state">
+          <h1>Sign in to view this product</h1>
+          <Link className="button" to="/login">
+            Sign in
+          </Link>
+        </div>
+      </section>
+    );
   if (error)
     return (
       <section className="content-page">
@@ -72,14 +91,26 @@ export default function ProductDetails() {
   return (
     <>
       <section className="details-page">
-        <div className="detail-image">Product image unavailable</div>
+        <div className="detail-image">
+          {product.imageUrl ? (
+            <img
+              src={product.imageUrl}
+              alt={product.pName}
+              onError={(event) => {
+                event.currentTarget.style.display = "none";
+                event.currentTarget.parentElement.classList.add("image-fallback");
+              }}
+            />
+          ) : (
+            "Product image unavailable"
+          )}
+        </div>
         <div className="detail-copy">
           <p className="eyebrow">{product.category}</p>
           <h1>{product.pName}</h1>
-          <p className="detail-price">£{Number(product.price).toFixed(2)}</p>
+          <p className="detail-price">₹{Number(product.price).toFixed(2)}</p>
           <p className="muted">
-            Brand, discount, rating, description and product images are not
-            provided by the backend.
+            Discount, rating, and description are not provided by the backend.
           </p>
           <p className="stock">
             {product.quantity > 0
@@ -103,7 +134,7 @@ export default function ProductDetails() {
             </button>
           </div>
           <div className="detail-meta">
-            <span>Brand unavailable</span>
+            <span>Brand: {product.brand}</span>
             <span>Rating unavailable</span>
             <span>Discount unavailable</span>
           </div>
@@ -122,7 +153,7 @@ export default function ProductDetails() {
               {similar.map((item) => (
                 <div key={item.pName}>
                   <strong>{item.pName}</strong>
-                  <span>£{Number(item.price).toFixed(2)}</span>
+                  <span>₹{Number(item.price).toFixed(2)}</span>
                 </div>
               ))}
             </div>

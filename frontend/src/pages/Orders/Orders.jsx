@@ -56,7 +56,7 @@ export default function Orders() {
                   · {order.productIds?.length || 0} products
                 </p>
               </div>
-              <strong>£{Number(order.totalAmount || 0).toFixed(2)}</strong>
+              <strong>₹{Number(order.totalAmount || 0).toFixed(2)}</strong>
             </article>
           ))}
         </div>

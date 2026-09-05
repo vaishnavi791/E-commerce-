@@ -28,6 +28,15 @@ public class Product {
     @NotBlank(message = "Category cannot be empty")
     private String category;
 
+    @NotBlank(message = "Subcategory cannot be empty")
+    private String subcategory;
+
+    @NotBlank(message = "Brand cannot be empty")
+    private String brand;
+
+    @NotBlank(message = "Image URL cannot be empty")
+    private String imageUrl;
+
     public Product() {
     }
 
@@ -37,6 +46,14 @@ public class Product {
         this.price = price;
         this.quantity = quantity;
         this.category = category;
+    }
+
+    public Product(Long id, String pName, double price, int quantity, String category,
+                   String subcategory, String brand, String imageUrl) {
+        this(id, pName, price, quantity, category);
+        this.subcategory = subcategory;
+        this.brand = brand;
+        this.imageUrl = imageUrl;
     }
 
     public Long getId() {
@@ -77,5 +94,29 @@ public class Product {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public String getSubcategory() {
+        return subcategory;
+    }
+
+    public void setSubcategory(String subcategory) {
+        this.subcategory = subcategory;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

@@ -10,10 +10,14 @@ public final class MapperUtil {
 
     public static ProductDTO toProductDTO(Product product) {
         ProductDTO dto = new ProductDTO();
+        dto.setId(product.getId());
         dto.setPName(product.getPName());
         dto.setPrice(product.getPrice());
         dto.setQuantity(product.getQuantity());
         dto.setCategory(product.getCategory());
+        dto.setSubcategory(product.getSubcategory());
+        dto.setBrand(product.getBrand());
+        dto.setImageUrl(product.getImageUrl());
         return dto;
     }
 }

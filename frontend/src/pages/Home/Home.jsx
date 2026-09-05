@@ -5,17 +5,24 @@ import ProductGrid from "../../components/ProductGrid/ProductGrid";
 import Loading from "../../components/Loading/Loading";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 import { apiFetch, endpoints } from "../../services/api";
+import { useAuth } from "../../context/AuthContext";
 
 export default function Home() {
+  const { token } = useAuth();
   const [products, setProducts] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   useEffect(() => {
+    if (!token) {
+      setLoading(false);
+      return;
+    }
+    setLoading(true);
     apiFetch(endpoints.products)
       .then(setProducts)
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
-  }, []);
+  }, [token]);
   return (
     <>
       <section className="hero">

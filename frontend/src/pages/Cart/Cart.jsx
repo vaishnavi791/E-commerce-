@@ -105,12 +105,27 @@ export default function Cart() {
         <div className="cart-layout">
           <div className="cart-list">
             {products.map((product) => (
-              <article className="cart-item" key={product.pName}>
-                <div className="cart-thumb">Product image unavailable</div>
+              <article className="cart-item" key={product.id}>
+                <div className="cart-thumb">
+                  {product.imageUrl ? (
+                    <img
+                      src={product.imageUrl}
+                      alt={product.pName}
+                      onError={(event) => {
+                        event.currentTarget.style.display = "none";
+                        event.currentTarget.parentElement.classList.add(
+                          "image-fallback",
+                        );
+                      }}
+                    />
+                  ) : (
+                    "Product image unavailable"
+                  )}
+                </div>
                 <div>
                   <p className="eyebrow">{product.category}</p>
                   <h3>{product.pName}</h3>
-                  <p>£{Number(product.price).toFixed(2)}</p>
+                  <p>₹{Number(product.price).toFixed(2)}</p>
                   <div className="quantity">
                     <button
                       disabled={mutating}

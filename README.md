@@ -55,6 +55,8 @@ cd backend
 ./mvnw spring-boot:run
 ```
 
+To load the sample women's catalog into MySQL, run `backend/database/seed-products.sql` after creating the `ecommerce` database. It adds twelve products, with three products in each of Clothing, Footwear, Accessories, and Beauty.
+
 ## MySQL Setup
 
 ```sql

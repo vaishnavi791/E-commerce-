@@ -1,11 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import ProductGrid from "../../components/ProductGrid/ProductGrid";
 import Loading from "../../components/Loading/Loading";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 import { apiFetch, endpoints } from "../../services/api";
+import { useAuth } from "../../context/AuthContext";
 
 export default function Products() {
+  const { token } = useAuth();
   const [params, setParams] = useSearchParams();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -14,15 +16,21 @@ export default function Products() {
     search: params.get("search") || "",
     category: params.get("category") || "",
     subcategory: "",
+    brand: "",
     maxPrice: "",
     sort: "featured",
   });
   useEffect(() => {
+    if (!token) {
+      setLoading(false);
+      return;
+    }
+    setLoading(true);
     apiFetch(endpoints.products)
       .then(setProducts)
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
-  }, []);
+  }, [token]);
   const subcategories = {
     Clothing: [
       "Dresses",
@@ -49,6 +57,11 @@ export default function Products() {
             (!filters.category ||
               product.category.toLowerCase() ===
                 filters.category.toLowerCase()) &&
+            (!filters.subcategory ||
+              product.subcategory.toLowerCase() ===
+                filters.subcategory.toLowerCase()) &&
+            (!filters.brand ||
+              product.brand.toLowerCase() === filters.brand.toLowerCase()) &&
             (!filters.maxPrice || product.price <= Number(filters.maxPrice)),
         )
         .sort((a, b) =>
@@ -66,6 +79,19 @@ export default function Products() {
     if (key === "search" || key === "category")
       setParams(value ? { [key]: value } : {});
   }
+  if (!token) {
+    return (
+      <section className="content-page">
+        <div className="empty-state">
+          <h1>Sign in to browse products</h1>
+          <Link className="button" to="/login">
+            Sign in
+          </Link>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="content-page">
       <div className="page-heading">
@@ -99,20 +125,37 @@ export default function Products() {
             <option key={item}>{item}</option>
           ))}
         </select>
-        <select aria-label="Subcategory filter" disabled>
-          <option>Subcategories unavailable</option>
+        <select
+          aria-label="Subcategory filter"
+          value={filters.subcategory}
+          onChange={(event) => updateFilter("subcategory", event.target.value)}
+          disabled={!filters.category}
+        >
+          <option value="">All subcategories</option>
+          {(subcategories[filters.category] || []).map((item) => (
+            <option key={item}>{item}</option>
+          ))}
         </select>
-        <select aria-label="Brand filter" disabled>
-          <option>Brand unavailable</option>
+        <select
+          aria-label="Brand filter"
+          value={filters.brand}
+          onChange={(event) => updateFilter("brand", event.target.value)}
+        >
+          <option value="">All brands</option>
+          {[...new Set(products.map((product) => product.brand))].map(
+            (brand) => (
+              <option key={brand}>{brand}</option>
+            ),
+          )}
         </select>
         <select
           value={filters.maxPrice}
           onChange={(event) => updateFilter("maxPrice", event.target.value)}
         >
           <option value="">Any price</option>
-          <option value="50">Under £50</option>
-          <option value="100">Under £100</option>
-          <option value="200">Under £200</option>
+          <option value="3000">Under ₹3,000</option>
+          <option value="6000">Under ₹6,000</option>
+          <option value="10000">Under ₹10,000</option>
         </select>
         <select
           value={filters.sort}
