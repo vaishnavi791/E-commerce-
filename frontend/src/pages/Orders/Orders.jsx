@@ -36,7 +36,6 @@ export default function Orders() {
       <div className="page-heading">
         <p className="eyebrow">Your account</p>
         <h1>Orders</h1>
-        <p>Your order history, from the backend.</p>
       </div>
       {loading ? (
         <Loading />

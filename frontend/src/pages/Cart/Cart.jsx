@@ -175,7 +175,6 @@ export default function Cart() {
             <h2>Summary</h2>
             <p>Subtotal <strong>₹{subtotal.toFixed(2)}</strong></p>
             <p>Total <strong>₹{subtotal.toFixed(2)}</strong></p>
-            <p>The backend confirms the final total from current product prices at checkout.</p>
             <Link className="button" to="/checkout">
               Checkout
             </Link>

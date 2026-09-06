@@ -38,10 +38,6 @@ export default function Checkout() {
       <div className="form-intro">
         <p className="eyebrow">Almost yours</p>
         <h1>Place your order</h1>
-        <p>
-          The backend will create your order from the current cart and calculate
-          the total.
-        </p>
         {error && <p className="form-error">{error}</p>}
         <button className="button" onClick={submit} disabled={busy}>
           {busy ? "Placing order..." : "Place order"}
