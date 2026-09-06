@@ -1,131 +1,549 @@
-# E-Commerce Backend
+# Mira: E-Commerce with AI/ML Recommendation System
 
-A production-style Spring Boot backend for an e-commerce application with JWT authentication, product management, cart operations, and order handling.
+A full-stack women's e-commerce platform built with **React, Spring Boot, MySQL, and a Python FastAPI recommendation service**. The project includes user authentication, product browsing, cart management, wishlist, checkout, order management, and an AI/ML-based product recommendation system.
+---
 
-## Project Overview
+# ✨ Features
 
-This project provides a layered REST API backend built with Java 17, Spring Boot 3.5.x, Spring Security, JWT, Spring Data JPA, MySQL, and Maven. Incoming client requests are intercepted by Spring Security and validated using stateless JWT tokens before reaching the controller layer. Validated requests then transition smoothly through specialized service and repository layers to perform secure data operations on the MySQL database.
+### 👤 User Management
 
-## Tech Stack
-### Tech Stack
+* User registration
+* User login
+* JWT-based authentication
+* Protected backend APIs
+* Role-based security structure
 
-![Java](https://img.shields.io/badge/Java_17-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
-![Spring Boot](https://img.shields.io/badge/Spring_Boot_3.5.x-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white)
-![Spring Security](https://img.shields.io/badge/Spring_Security-6DB33F?style=for-the-badge&logo=spring&logoColor=white)
-![JWT](https://img.shields.io/badge/JWT_Authentication-black?style=for-the-badge&logo=JSON-web-tokens&logoColor=white)
-![MySQL](https://img.shields.io/badge/MySQL-00758F?style=for-the-badge&logo=mysql&logoColor=white)
-![Maven](https://img.shields.io/badge/Maven-C71A36?style=for-the-badge&logo=apache-maven&logoColor=white)
-![Lombok](https://img.shields.io/badge/Lombok-red?style=for-the-badge)
+### 🛍️ Product Management
 
-## Folder Structure
+* Browse products
+* Product details
+* Category and subcategory organization
+* Product search
+* Product images
+* Brand and description information
+
+### 🛒 Shopping Cart
+
+* Add products to cart
+* Update product quantity
+* Remove products
+* Calculate cart total
+* Checkout
+
+### ❤️ Wishlist
+
+* Add/remove products from wishlist
+* View wishlist
+
+### 📦 Orders
+
+* Place orders through checkout
+* View order history
+* Track order details
+* Order status management
+
+### 🤖 AI/ML Recommendations
+
+* Tracks user-product interactions
+* Uses weighted interactions
+* Identifies preferred product subcategories
+* Uses TF-IDF to represent product content
+* Uses cosine similarity to measure product similarity
+* Prioritizes the user's strongest product preference
+* Provides fallback recommendations when sufficient data is unavailable
+
+---
+
+# 🏗️ System Architecture
 
 ```text
-backend/
-  src/
-    main/
-      java/com/ecommerce/backend/
-        config/
-        controller/
-        dto/
-        exception/
-        model/
-        repository/
-        security/
-        service/
-        util/
-      resources/application.properties
-  pom.xml
-  mvnw
-  mvnw.cmd
-  .mvn/
-frontend/
-  src/
-  package.json
+                         ┌─────────────────────┐
+                         │    React Frontend    │
+                         │     Vite + React     │
+                         └──────────┬──────────┘
+                                    │
+                           HTTP REST Requests
+                                    │
+                         Authorization: Bearer JWT
+                                    │
+                                    ▼
+                    ┌────────────────────────────┐
+                    │     Spring Boot Backend    │
+                    │                            │
+                    │ Controllers                │
+                    │ Services                   │
+                    │ Repositories               │
+                    │ Spring Security + JWT      │
+                    └─────────────┬──────────────┘
+                                  │
+                     ┌────────────┴────────────┐
+                     │                         │
+                     ▼                         ▼
+             ┌───────────────┐       ┌─────────────────────┐
+             │ MySQL Database│       │ Python Recommendation│
+             │               │       │ FastAPI Service      │
+             │ Users         │       │                      │
+             │ Products      │       │ TF-IDF               │
+             │ Cart          │       │ Cosine Similarity    │
+             │ Orders        │       │ User Interactions    │
+             │ Interactions  │       │                      │
+             └───────────────┘       └─────────────────────┘
 ```
 
-## Installation
+---
 
-1. Clone the repository.
-2. Create a MySQL database named `ecommerce`.
-3. Update the database and JWT credentials in `backend/src/main/resources/application.properties`.
-4. Run:
+# 🧩 Technology Stack
+
+## Frontend
+
+* React.js
+
+## Backend
+
+* Java 17
+* Spring Boot 3.5.4
+* Spring Data JPA
+* Spring Security
+* JWT
+* Lombok
+
+## Database
+
+* MySQL
+
+## Recommendation Service
+
+* Python
+* FastAPI
+* TF-IDF
+* Cosine Similarity
+
+## Testing
+
+* Postman
+* Swagger UI
+
+---
+
+# 📁 Project Structure
+
+```text
+E-Commerce-Backend-System/
+│
+├── backend/
+│   ├── src/
+│   │   └── main/
+│   │       ├── java/
+│   │           └── ...
+│   ├── pom.xml
+│   └── postman_collection.json
+│
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── context/
+│   │   └── services/
+│   │
+│   ├── package.json
+│   └── vite.config.js
+│
+├── recommendation-service/
+│   ├── main.py
+│   ├── requirements.txt
+│   └── README.md
+│
+└── README.md
+```
+
+### Main entities
+
+* `User`
+* `Product`
+* `Cart`
+* `CartItem`
+* `Order`
+* `OrderItem`
+* `UserInteraction`
+
+The `UserInteraction` data is particularly important for the recommendation system because it provides the behavioral signals used to infer user preferences.
+
+---
+
+# 🌐 Important API Endpoints
+
+The exact endpoints should be checked against the current controller implementation, but the application is organized around APIs such as:
+
+| Area            | Method | Endpoint           |
+| --------------- | ------ | ------------------ |
+| Authentication  | POST   | `/auth/register`   |
+| Authentication  | POST   | `/auth/login`      |
+| Products        | GET    | `/products`        |
+| Products        | GET    | `/products/{id}`   |
+| Cart            | POST   | `/cart/items`      |
+| Cart            | GET    | `/cart`            |
+| Cart            | PUT    | `/cart/items/{id}` |
+| Cart            | DELETE | `/cart/items/{id}` |
+| Orders          | POST   | `/orders/checkout` |
+| Orders          | GET    | `/orders`          |
+| Recommendations | GET    | `/recommendations` |
+
+
+# 🚀 Installation and Setup
+
+## 1. Clone the Repository
 
 ```bash
-cd backend
-./mvnw spring-boot:run
+git clone <your-github-repository-url>
+cd E-Commerce-Backend-System
 ```
 
-The sample catalog is loaded automatically into MySQL when Spring Boot starts. Existing products are preserved, and the application adds any missing catalog products for recommendation testing.
+---
 
-## Personalized Recommendations
+# 🗄️ 2. Configure MySQL
 
-The project includes a separate TF-IDF recommendation service in `recommendation-service/`. Start it before Spring Boot:
+Create a MySQL database for the project.
 
-```powershell
-cd recommendation-service
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-pip install -r requirements.txt
-uvicorn main:app --reload --port 8000
-```
-
-Then start Spring Boot from `backend/`. Authenticated React users receive recommendations from `GET /api/recommendations`; React calls Spring Boot only, and Spring Boot calls the Python service internally.
-
-## MySQL Setup
+Example:
 
 ```sql
 CREATE DATABASE ecommerce;
 ```
+configuration:
 
-## API Endpoints
-
-### Authentication
-- POST `/auth/register`
-- POST `/auth/login`
-
-### Products
-- POST `/products`
-- GET `/products`
-- GET `/products/{id}`
-- PUT `/products/{id}`
-- DELETE `/products/{id}`
-
-### Cart
-- POST `/cart/items`
-- GET `/cart`
-- PUT `/cart/items/{productId}`
-- DELETE `/cart/items/{productId}`
-- DELETE `/cart`
-
-### Orders
-- POST `/orders/checkout`
-- GET `/orders`
-- PUT `/orders/{orderId}/cancel`
-
-## JWT Authentication
-
-Use the token returned by `/auth/login` in the `Authorization` header:
-
-```http
-Authorization: Bearer <token>
+```text
+backend/src/main/resources/application.properties
 ```
 
-## Postman Screenshots
+---
 
-A Postman collection can be generated from the listed endpoints for manual API testing.
+# ☕ 3. Run the Spring Boot Backend
 
-Testing User Registration on Postman:
-<img width="1422" height="776" alt="Screenshot 2026-07-12 130541" src="https://github.com/user-attachments/assets/2220df41-44a6-4e22-bdeb-230bb6efa256" />
+```bash
+cd backend
+```
+Run:
+
+```bash
+mvn spring-boot:run
+```
+runs on:
+
+```text
+http://localhost:8080
+```
+
+---
+
+# ⚛️ 4. Run the React Frontend
+
+```bash
+cd frontend
+```
+
+Install dependencies & Run frontend:
+
+```bash
+npm install
+```
+
+```bash
+npm run dev
+```
+runs on:
+
+```text
+http://localhost:5173
+```
+---
+
+# 🤖 5. Run the Recommendation Service
+
+```bash
+cd recommendation-service
+```
+
+Create a virtual environment:
+
+### Windows
+
+```bash
+python -m venv .venv
+```
+Activate it:
+
+```powershell
+.venv\Scripts\Activate.ps1
+```
+
+Install dependencies & Run FastAPI:
+
+```bash
+pip install -r requirements.txt
+```
+
+```bash
+python -m uvicorn main:app --reload
+```
+runs on:
+
+```text
+http://localhost:8000
+```
+
+---
+
+# 🔄 User Flow
+
+## 1. Registration / Login
+
+```text
+User
+ ↓
+React Login/Register
+ ↓
+Spring Boot AuthController
+ ↓
+AuthService
+ ↓
+MySQL User
+ ↓
+JWT generated
+ ↓
+JWT returned to frontend
+```
+
+The frontend uses the JWT when accessing protected APIs.
+
+---
+
+## 2. Browsing Products
+
+```text
+User opens Products page
+        ↓
+React sends GET request
+        ↓
+Spring Boot ProductController
+        ↓
+ProductService
+        ↓
+ProductRepository
+        ↓
+MySQL
+        ↓
+Products returned to React
+```
+
+---
+
+## 3. Product Interaction
+
+User actions can generate recommendation signals such as:
+
+```text
+VIEW
+CART_ADD
+PURCHASE
+```
+
+These interactions are associated with the user and product.
+
+The recommendation system uses these interactions to understand user preferences.
+
+---
+
+# 🛒 Order / Checkout Flow
+
+The main checkout flow is:
+
+```text
+User
+ ↓
+Add Product
+ ↓
+POST /cart/items
+ ↓
+Cart updated
+ ↓
+User opens Checkout
+ ↓
+POST /orders/checkout
+ ↓
+Backend authenticates user using JWT
+ ↓
+Backend loads user's cart
+ ↓
+Order is created
+ ↓
+Order items are created
+ ↓
+Total is calculated
+ ↓
+Cart is cleared
+ ↓
+Order response returned
+```
+
+The important point is that **the frontend does not decide whether the user is authenticated**. The backend validates the JWT and establishes the authenticated user context before processing protected requests.
+
+---
+
+# 🔐 Authentication and JWT
+
+Mira uses **JWT-based authentication** with Spring Security.
+
+### Login flow
+
+```text
+React
+ ↓
+POST /auth/login
+ ↓
+Spring Boot
+ ↓
+Validate username/email + password
+ ↓
+Generate JWT
+ ↓
+Return JWT
+ ↓
+Frontend stores token
+```
+
+For subsequent protected requests:
+
+```http
+Authorization: Bearer <JWT>
+```
+
+The backend processes the token through the Spring Security authentication flow.
 
 
-Testing User Login on Postman:
-<img width="1421" height="772" alt="Screenshot 2026-07-12 130808" src="https://github.com/user-attachments/assets/5a1cabe5-325f-462e-83b1-3755bfb1baea" />
+# 🤖 AI/ML Recommendation System
+
+Mira uses a **content-based recommendation approach** implemented as a separate Python FastAPI service.
+
+### Technologies
+
+* Python
+* FastAPI
+* Scikit-learn
+* TF-IDF
+* Cosine Similarity
+
+---
+
+## Recommendation Problem
+
+The initial recommendation approach used product text such as:
+
+```text
+category + subcategory + brand + description
+```
+
+and calculated cosine similarity across products.
+
+A problem with this approach was that products from different subcategories could be recommended simply because their descriptions contained similar generic words.
+
+For example:
+
+```text
+User preference:
+Jewellery
+
+Potential recommendation:
+Watch
+```
+
+Even though both products belonged to the broader `Accessories` category, the textual similarity could cause the watch to receive a high similarity score.
+
+---
+
+# 🎯 Hierarchical Recommendation Strategy
+
+To make recommendations more meaningful, the recommendation logic was designed around the user's **subcategory preference first**, followed by content similarity.
+
+The general strategy is:
+
+```text
+User Interactions
+       ↓
+Calculate weighted preference
+       ↓
+Find strongest subcategory
+       ↓
+Filter/prioritize products from that subcategory
+       ↓
+TF-IDF + Cosine Similarity
+       ↓
+Rank products
+       ↓
+If insufficient products:
+expand to other preferred subcategories
+       ↓
+Broader category/fallback candidates
+       ↓
+Return recommendations
+```
+
+---
+
+# 📊 Interaction Weighting
+
+Different interactions represent different levels of user interest.
+
+| Interaction | Weight |
+| ----------- | -----: |
+| VIEW        |      1 |
+| CART_ADD    |      2 |
+| PURCHASE    |      3 |
 
 
-## Future Improvements
+# 🧠 TF-IDF
 
-- Add a minimal frontend using react.js
-- Add payment integration
-- Introduce inventory management
-- Add pagination and filtering
-- Add full integration tests
+**TF-IDF** stands for **Term Frequency-Inverse Document Frequency**.
+
+It converts textual information into numerical vectors.
+
+For the recommendation model, product content can be represented using:
+
+```text
+brand + description
+```
+
+For example:
+
+```text
+"Zara floral printed cotton dress"
+```
+
+is converted into a numerical vector.
+
+Words that are useful for distinguishing products receive greater importance than words that appear frequently across many products.
+
+---
+
+# 📐 Cosine Similarity
+
+Cosine similarity measures how similar two vectors are.
+
+Conceptually:
+
+```text
+Similarity(A, B)
+        ↓
+Compare their TF-IDF vectors
+        ↓
+Higher cosine similarity
+        =
+More similar product content
+```
+
+A value closer to `1` means the vectors point in a more similar direction.
+
+The recommendation system uses this score to rank products **within the appropriate candidate group**.
+
+---
+**Mira is a full-stack women's e-commerce platform built with React, Spring Boot, MySQL, and a Python-based TF-IDF recommendation service that provides personalized, subcategory-aware product recommendations based on user interactions.**
+
